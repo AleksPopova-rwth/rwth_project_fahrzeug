@@ -1,7 +1,6 @@
 # Проект Fahrzeug
 
-Пока вывод такой:
-
+Der Output von dem Projekt. Dazu gehört noch Java Simulation mit den Autos.
 ```bash
 alpopova@dl580:~/Fahrzeug/Fahrzeug$ ./main 
 
