@@ -39,3 +39,36 @@ alpopova@dl580:~/Fahrzeug/Fahrzeug$ ./main
     5       tez                                    24.7                         309.2
 
 ```
+
+# rwth_project_fahrzeug
+
+## Überblick
+
+Das Projekt `rwth_project_fahrzeug` befasst sich mit der Modellierung und Steuerung von Fahrzeugen über Java. Es enthält Funktionen und Klassen zur Simulation von Fahrzeugoperationen wie Starten, Stoppen, Beschleunigen und Bremsen.
+
+Das Projekt ist Teil eines größeren Vorhabens an der RWTH Aachen und richtet sich an die Entwicklung und Analyse von Fahrzeugsteuerungssystemen.
+
+## Funktionen
+
+- Erstellung und Verwaltung von Fahrzeugobjekten
+- Simulation von Fahrverhalten
+- Steuerung der Fahrzeuggeschwindigkeit
+
+## Verwendung
+
+- Klone das Repository:
+  ```bash
+  git clone https://github.com/AleksPopova-rwth/rwth_project_fahrzeug.git
+  ```
+
+- Baue das Projekt:
+  ```bash
+  make
+  ```
+
+- Führe das Projekt aus:
+  ```bash
+  ./fahrzeug_simulation
+  ```
+
+Das Dokument bietet eine kurze Einführung in das Projekt, die grundlegenden Funktionen und Anweisungen zur Verwendung. Es ist einfach gehalten, um die wesentlichen Informationen zu vermitteln.
