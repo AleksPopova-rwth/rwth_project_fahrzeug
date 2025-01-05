@@ -1,0 +1,107 @@
+#include "Weg.h"
+#include "Fahrzeug.h"
+#include "Fahrausnahme.h"
+#include "PKW.h"
+#include "Fahrrad.h"
+
+#include <iomanip>
+
+Weg::Weg(){
+    Simulationsobjekt::vNewSimulationsobjekt();
+    p_eTempolimit = getTempolimit(Tempolimit::Autobahn);
+    p_dLaenge = 50.0; // in km;
+
+}
+Weg::Weg(string copyName, unsigned int copyID, double copyLaenge, Tempolimit copyTempolimit) : Simulationsobjekt(copyName, copyID), p_dLaenge(copyLaenge){
+
+	p_eTempolimit = getTempolimit(copyTempolimit);
+}
+Weg::~Weg() {
+    // Ваш код деструктора
+}
+
+//ostream& operator<<(ostream& ausgabe, const Weg& weg)
+//{
+//		ausgabe<< resetiosflags(ios::left) << setiosflags(ios::right) << setw(5) << weg.p_iID << " " // ID rechtsb�ndig
+//		<< resetiosflags(ios::right) << setiosflags(ios::left) << setw(10) <<  weg.p_sName << ": " // Name linksb�ndig
+//		<< resetiosflags(ios::left) << setiosflags(ios::right) << setw(40) <<  weg.p_dMaxGeschwindigkeit << " km/h";
+//	return ausgabe;
+//}
+
+//bool Weg::operator < (const Weg& weg) const
+//{
+//	return (this->p_dGesamtStrecke < weg.p_dGesamtStrecke);
+//}
+
+
+double Weg::getTempolimit(Tempolimit tempolimit) const {
+    switch (tempolimit) {
+        case Tempolimit::Innerorts:
+            return 50.0;
+        case Tempolimit::Landstrasse:
+            return 100.0;
+        case Tempolimit::Autobahn:
+            return numeric_limits<double>::max(); // Unbegrenztes Tempolimit
+        default:
+            return 0.0; // Fallback-Wert
+    }
+}
+void Weg::vSimulieren() {
+    // Simulation aller auf dem Weg befindlichen Fahrzeuge
+    for (auto& fahrzeug : p_pFahrzeuge) {
+        fahrzeug->vSimulieren();
+        cout << *fahrzeug << endl;
+        fahrzeug->vZeichnen(*this);
+    }
+
+}
+
+ostream& Weg::vAusgeben(ostream& ausgabe) const {
+
+	ausgabe << p_sName << " : " << p_dLaenge<< "  ( ";
+	for (const auto& fahrzeug : p_pFahrzeuge) {
+	            ausgabe << fahrzeug->getName()<<" ";
+	        }
+	ausgabe << ") ";
+
+	return ausgabe;
+}
+
+
+void Weg::vKopf() {
+    cout << std::setw(5) << "ID" << " | "
+            << std::setw(10) << "Name" << " | "
+            << std::setw(10) << "Laenge" << " | "
+            << std::setw(30) << "Fahrzeuge" << std::endl;
+    cout << std::string(55, '-') << std::endl;
+}
+
+
+double Weg::getLaenge(){
+	return p_dLaenge;
+}
+
+
+void Weg::vAnnahme(unique_ptr<Fahrzeug> fahrzeug) {
+    p_pFahrzeuge.push_back(move(fahrzeug));
+    p_pFahrzeuge.back()->vNeueStrecke(*this);
+
+
+}
+void Weg::vAnnahme(unique_ptr<Fahrzeug> fahrzeug, double dStartzeitpunkt) {
+    p_pFahrzeuge.push_front(move(fahrzeug));
+	p_pFahrzeuge.front()->vNeueStrecke(*this, dStartzeitpunkt);
+
+}
+void Weg::vAbgabe(const Fahrzeug& fahrzeug)
+{
+	Fahrzeug* ptr = &fahrzeug;
+	auto it = find(p_pFahrzeuge.begin(), p_pFahrzeuge.end(), &ptr);
+
+	if (it != p_pFahrzeuge.end()) // gefunden ?
+	{
+		p_pFahrzeuge.erase(it);
+	}
+}
+
+

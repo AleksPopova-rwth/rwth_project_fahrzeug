@@ -1,0 +1,166 @@
+/*
+ * Fahrzeug.cpp
+ *
+ *  Created on: 25 окт. 2023 г.
+ *      Author: alexp
+ */
+#include <iostream>
+#include <iomanip>
+#include <memory>
+#include "Fahrzeug.h"
+#include "Fahren.h"
+#include "Parken.h"
+#include "Verhalten.h"
+
+Fahrzeug::Fahrzeug(){
+	vNewFahrzeug();
+}//var 1, default version
+
+Fahrzeug::Fahrzeug(string copyName, unsigned int copyID, double copyMaxG, fahrzeug_type t_fahrzeug): Simulationsobjekt(copyName,copyID), p_dMaxGeschwindigkeit(copyMaxG), t_fahrzeug(t_fahrzeug)  {
+
+	p_dTankvolumen=0;
+	p_dGesamtStrecke=0;
+	p_dTankinhalt=0;
+	p_dAbschnittStrecke=0;
+	p_dCurGeschwindigkeit=p_dMaxGeschwindigkeit;
+}//var 2
+
+Fahrzeug::~Fahrzeug(){
+}
+
+void Fahrzeug::vNewFahrzeug()
+{
+	Simulationsobjekt::vNewSimulationsobjekt();
+	p_dGesamtStrecke=0;
+	p_dMaxGeschwindigkeit=50;
+	p_dCurGeschwindigkeit=p_dMaxGeschwindigkeit;
+	p_dTankvolumen=0;
+}
+
+void Fahrzeug::vAusgaben(){
+	Simulationsobjekt::vAusgaben();
+	cout << resetiosflags(ios::left) << setiosflags(ios::right) << setw(40) << p_dCurGeschwindigkeit << " " ;
+}
+void Fahrzeug::vKopf(){
+	cout<<endl<<"-------------------------------------------------------------------------------------------------------------------"<<endl;
+	cout<<endl<< resetiosflags(ios::left) << setiosflags(ios::right) << setw(5) << "ID";
+	cout<< resetiosflags(ios::left) << setiosflags(ios::right) << setw(10) << "Name";
+	cout<< resetiosflags(ios::left) << setiosflags(ios::right) << setw(40) << "aktuelle Geschwind.";
+}
+void Fahrzeug::vSimulieren(){
+	if (dGlobaleZeit!=p_dGesamtZeit){
+		unsigned int delta_t = dGlobaleZeit - p_dGesamtZeit;
+		double dTeilStrecke;
+		try {
+			dTeilStrecke = p_pVerhalten->dStrecke(*this, delta_t);
+		} catch (const Losfahren& e) {
+			cout<< "Das Fahrzeug " << this->getName() << " losfahren" << endl;
+			vFahren(p_pVerhalten->referenzWeg);
+			dTeilStrecke = p_pVerhalten->dStrecke(*this, delta_t);
+		} catch (const Streckenende& e){
+			cout<< "Das Fahrzeug " << this->getName() << " aus dem Weg" << endl;
+			this->vZeichnen(p_pVerhalten->referenzWeg);
+			vRAUS(p_pVerhalten->referenzWeg);
+			//dTeilStrecke = p_pVerhalten->dStrecke(*this, delta_t);
+		//TODO: добавить другие исключения:
+		// 		- встать на паркинг
+		};
+
+		p_dAbschnittStrecke += dTeilStrecke;
+		p_dGesamtStrecke += dTeilStrecke;
+		if (dTeilStrecke == 0) p_dCurGeschwindigkeit = 0;
+	};
+}
+
+double Fahrzeug::dTanken(){
+	return 0.0;
+}
+
+double Fahrzeug::dTanken(double dMenge) {
+	return 0.0;
+}
+
+double Fahrzeug::dGeschwindigkeit() {
+	return p_dMaxGeschwindigkeit;
+}
+//
+//ostream& operator<<(ostream& ausgabe, const Fahrzeug& fahrzeug)
+//{
+//		ausgabe<< resetiosflags(ios::left) << setiosflags(ios::right) << setw(5) << fahrzeug.p_iID << " " // ID rechtsb�ndig
+//		<< resetiosflags(ios::right) << setiosflags(ios::left) << setw(10) <<  fahrzeug.p_sName << ": " // Name linksb�ndig
+//		<< resetiosflags(ios::left) << setiosflags(ios::right) << setw(40) <<  fahrzeug.p_dMaxGeschwindigkeit << " km/h";
+//	return ausgabe;
+//}
+
+bool Fahrzeug::operator < (const Fahrzeug& fahrzeug) const
+{
+	return (this->p_dGesamtStrecke < fahrzeug.p_dGesamtStrecke);
+}
+
+double Fahrzeug::get_Tankinhalt() {
+	return p_dTankinhalt;
+}
+
+double Fahrzeug::get_GesamtStrecke() {
+	return p_dGesamtStrecke;
+}
+double Fahrzeug::set_GesamtStrecke(double copyGesamtStrecke) {
+	p_dGesamtStrecke = copyGesamtStrecke;
+	return p_dGesamtStrecke;
+}
+double Fahrzeug::get_TeilStrecke() {
+	return p_dAbschnittStrecke;
+}
+double Fahrzeug::set_TeilStrecke(double copyTeilStrecke) {
+	p_dAbschnittStrecke  =copyTeilStrecke ;
+	return p_dAbschnittStrecke;
+}
+
+
+string Fahrzeug::getName() const{
+	return p_sName;
+}
+unsigned int Fahrzeug::getID() const{
+	return p_iID;
+}
+
+
+ostream& Fahrzeug::vAusgeben(ostream& ausgabe) const {
+    // Rufe die vAusgeben-Methode der Basisklasse auf
+    Simulationsobjekt::vAusgeben(ausgabe);
+    ausgabe	<< resetiosflags(ios::left) << setiosflags(ios::right) << setw(40) << p_dCurGeschwindigkeit << " km/h";
+    return ausgabe;
+}
+
+void Fahrzeug::vNeueStrecke(Weg& weg) {
+	p_pVerhalten.reset(); // Setzt den einzigartigen Zeiger zurück und kümmert sich um die Freigabe des zugehörigen Speichers
+    p_dAbschnittStrecke=0.0;
+    p_pVerhalten = make_unique<Fahren>(weg);
+    // Neue Instanz von V erstellen und in pVerhalten speichern
+}
+void Fahrzeug::vNeueStrecke(Weg& weg, double dStartzeitpunkt)
+{
+	p_pVerhalten.reset();
+	p_dAbschnittStrecke = 0.0;
+    p_pVerhalten = make_unique<Parken>(weg, dStartzeitpunkt);
+}
+
+void Fahrzeug::vParken(Weg& weg, double dStartzeitpunkt) {
+	p_pVerhalten.reset();
+    p_pVerhalten = make_unique<Parken>(weg, dStartzeitpunkt);
+}
+void Fahrzeug::vRAUS(Weg& weg) {
+	weg.vAbgabe(*this);
+}
+
+
+void Fahrzeug::vFahren(Weg& weg) {
+	p_pVerhalten.reset();
+    p_pVerhalten = make_unique<Fahren>(weg);
+}
+void Fahrzeug::vZeichnen(const Weg&) const{
+
+}
+bool Fahrzeug::operator==(const Fahrzeug& other) const {
+    return this->getID() == other.getID();
+}

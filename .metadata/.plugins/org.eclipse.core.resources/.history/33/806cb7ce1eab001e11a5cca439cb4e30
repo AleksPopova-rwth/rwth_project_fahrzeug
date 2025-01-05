@@ -1,0 +1,20 @@
+#ifndef VERHALTEN_H
+#define VERHALTEN_H
+#include "Weg.h"
+
+class Weg;
+class Verhalten{
+	protected:
+    //Weg& referenzWeg;  // Referenz auf einen Weg
+
+	public:
+    	Weg& referenzWeg;  // Referenz auf einen Weg
+    	mutable unsigned int reCoGnizer;
+
+		Verhalten(Weg& weg);
+		virtual ~Verhalten();
+	    virtual double dStrecke(Fahrzeug& fahrzeug, unsigned int dZeitIntervall) const;  // Neue Funktion zur Berechnung der Strecke
+	    void vFreigabeRessourcen();
+};
+
+#endif // VERHALTEN_H

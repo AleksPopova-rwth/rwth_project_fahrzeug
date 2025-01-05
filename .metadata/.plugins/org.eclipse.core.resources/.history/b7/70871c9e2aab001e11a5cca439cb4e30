@@ -1,0 +1,43 @@
+#ifndef WEG_H
+#define WEG_H
+#include <list>
+#include <vector>
+#include <algorithm>
+#include <limits>
+
+#include "Tempolimit.h"
+#include "Simulationsobjekt.h"
+
+class Fahrzeug;
+
+class Weg : public Simulationsobjekt
+{
+    protected:
+        double p_dLaenge;
+
+        list <unique_ptr<Fahrzeug> > p_pFahrzeuge;
+    public:
+        double p_eTempolimit;
+        Weg();
+        Weg(string copyName, unsigned int copyID, double copyLaenge, Tempolimit copyTempolimit);
+
+        Weg(const Weg &f)=delete;
+        virtual ~Weg();
+
+	    void vSimulieren() override;//rein virtuelle Methode
+        //friend ostream& operator<<(ostream& ausgabe, const Weg& weg);
+	    virtual std::ostream& vAusgeben(std::ostream& ausgabe) const override;
+
+        double getTempolimit(Tempolimit tempolimit) const;
+
+        static void vKopf();
+
+        double getLaenge();
+        void vAnnahme(std::unique_ptr<Fahrzeug> fahrzeug);
+        void vAnnahme(unique_ptr<Fahrzeug> fahrzeug, double dStartzeitpunkt);
+        void vAbgabe(const Fahrzeug& fahrzeug);
+
+};
+
+
+#endif /* WEG_H */

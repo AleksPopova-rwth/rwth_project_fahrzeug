@@ -1,0 +1,12 @@
+*.o
+main
+.vscode
+*.d
+/Debug/
+Debug
+Fahzeug/*.o
+Fahzeug/main
+Fahzeug/.vscode
+Fahzeug/*.d
+Fahzeug/Debug/
+Fahzeug/Debug

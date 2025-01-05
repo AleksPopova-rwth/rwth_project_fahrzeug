@@ -1,0 +1,267 @@
+/*
+ * main.cpp
+ *
+ *  Created on: 23 нояб. 2023 г.
+ *      Author: alexp
+ */
+
+
+
+/*
+ * main.cpp
+ *
+ *  Created on: 25 окт. 2023 г.
+ *      Author: alexp
+ */
+#include "Fahrrad.h"
+#include "PKW.h"
+#include "Fahrzeug.h"
+#include "Weg.h"
+
+#include <memory>
+#include <vector>
+#include <string>
+#include <iostream>
+#include <algorithm>
+using namespace std;
+#include "SimuClient.h"
+
+/*int main()
+{
+	Fahrzeug *car1 = new Fahrzeug("LADA", 0,4);
+	//cout<<car1->get_Name()<<endl;//первый с динамической памятью. Надо самим все удалять.
+	//free(car1);
+	Fahrzeug car2("URAL",1,5);
+	//cout<<car2.get_ID()<<endl;//статическая память
+
+	std::unique_ptr<Fahrzeug> car3 = std::make_unique<Fahrzeug>("Porsche",9,3);
+	std::unique_ptr<Fahrzeug> car4 = std::make_unique<Fahrzeug>("Bentley",6,4);
+	car4->set_Name("Kalinka");
+	cout<<car3->get_Name()<<endl;
+	cout<<car4->get_Name()<<endl;
+	std::vector<std::unique_ptr<Fahrzeug>> fahrzeugVector1;
+	fahrzeugVector1.push_back(move(car3));
+	fahrzeugVector1.push_back(move(car4));
+
+	std::shared_ptr<Fahrzeug> car5 = std::make_shared<Fahrzeug>("Hundai",10,5);
+	cout<<car5->get_Name()<<endl;
+
+	std::shared_ptr<Fahrzeug> car6 = std::make_shared<Fahrzeug>("Krundai",12,6);
+	cout<<car6->get_Name()<<endl;
+	std::vector<std::shared_ptr<Fahrzeug>> fahrzeugVector2;
+	fahrzeugVector2.push_back(move(car5));//в конце дебага он прошелся в другую сторону и удалил все вектора с названием move
+	fahrzeugVector2.push_back(car6);// этот вектор он не удалил!!
+
+	car2.vKopf();
+	car2.vAusgaben();cout << endl;
+	car1->vAusgaben();cout << endl;
+	//car4->vAusgaben();cout << endl;
+	//car5->vAusgaben();cout << endl;
+	//car6->vAusgaben();cout << endl;
+
+	fahrzeugVector2.clear();
+	fahrzeugVector1.clear();
+	car3.reset();//удалить объекты
+	car4.reset();
+	car5.reset();
+	car6.reset();
+	//~unique_ptr(fahrzeugVector1);//деконструктор вектора...нужен ли он хрен знает
+return 0;
+};*/
+// int Aufgabe_1(){
+
+// 		std::unique_ptr<Fahrzeug> car10 = std::make_unique<Fahrzeug>("k334",30);
+// 		std::unique_ptr<Fahrzeug> car11 = std::make_unique<Fahrzeug>("k335",50);
+// 		std::unique_ptr<Fahrzeug> car12 = std::make_unique<Fahrzeug>("k336",60);
+// 		std::vector<std::unique_ptr<Fahrzeug>> fahrzeugVector3;
+// 		fahrzeugVector3.push_back(move(car10));
+// 		fahrzeugVector3.push_back(move(car11));
+// 		fahrzeugVector3.push_back(move(car12));
+
+
+// 		for(dGlobaleZeit=0.0;dGlobaleZeit<20.0;dGlobaleZeit+=1){
+// 			fahrzeugVector3[0]->vSimulieren();
+// 			fahrzeugVector3[1]->vSimulieren();
+// 			fahrzeugVector3[2]->vSimulieren();
+
+// 			cout << endl;
+// 			cout<<dGlobaleZeit<<" Stunden"<< endl;
+// 			cout << endl;
+// 			fahrzeugVector3[0]->vKopf();
+// 			//fahrzeugVector3[0]->vAusgaben();cout << endl;
+// 			//fahrzeugVector3[1]->vAusgaben();cout << endl;
+// 			//fahrzeugVector3[2]->vAusgaben();cout << endl;
+// 		};
+// 		car10.reset();
+// 		car11.reset();
+// 		car12.reset();
+// 		fahrzeugVector3.clear();
+
+// 	return 0;
+
+// 	};
+
+
+ int Aufgabe_2(){
+
+ 	// std::unique_ptr<PKW> pkw10 = std::make_unique<PKW>("hrunja", 55,3);
+ 	// std::unique_ptr<PKW> pkw11 = std::make_unique<PKW>("fignja", 55,7);
+ 	// std::unique_ptr<PKW> pkw12 = std::make_unique<PKW>("Skorost",55,2);
+
+
+ 	// std::unique_ptr<Fahrrad> fahrrad10 = std::make_unique<Fahrrad>("kaskad",20);
+ 	// std::unique_ptr<Fahrrad> fahrrad11 = std::make_unique<Fahrrad>("fin",15);
+ 	// std::unique_ptr<Fahrrad> fahrrad12 = std::make_unique<Fahrrad>("pravda",39);
+ 	// std::vector<std::unique_ptr<Fahrrad>> fahrradVector3;
+ 	// std::vector<std::unique_ptr<PKW>> pkwVector3;
+
+ 	// fahrradVector3.push_back(move(fahrrad10));
+ 	// fahrradVector3.push_back(move(fahrrad11));
+ 	// fahrradVector3.push_back(move(fahrrad12));
+
+ 	// pkwVector3.push_back(move(pkw10));
+ 	// pkwVector3.push_back(move(pkw11));
+ 	// pkwVector3.push_back(move(pkw12));
+
+ 	PKW *pkw0 = new PKW("maz", 6, 120,5);
+ 	PKW *pkw1 = new PKW("paz",7,  120,7);
+ 	PKW *pkw2 = new PKW("gaz", 8, 120,9);
+
+ 	pkw0->vKopf();
+ 	// 3 stunde
+ 	{
+ 		dGlobaleZeit = 180;
+ 		pkw0->vSimulieren();
+ 		pkw1->vSimulieren();
+ 		pkw2->vSimulieren();
+ 		cout << *pkw0 << endl;
+ 		cout << *pkw1 << endl;
+ 		cout << *pkw2 << endl;
+ 	}
+ 	// tankinhalt 100%
+ 	pkw0->vKopf();
+ 	{
+ 		pkw0->dTanken(100);
+ 		pkw1->dTanken(100);
+ 		pkw2->dTanken(100);
+ 		// cout << "Заправлено в 0: " << pkw0->dTanken(100) << endl;
+ 		// cout << "Заправлено в 1: " << pkw1->dTanken(100) << endl;
+ 		// cout << "Заправлено в 2: " << pkw2->dTanken(100) << endl;
+ 		cout << *pkw0 << endl;
+ 		cout << *pkw1 << endl;
+ 		cout << *pkw2 << endl;
+
+ 	}
+ 	// 6 stunde
+ 	pkw0->vKopf();
+ 	{
+ 		dGlobaleZeit += 180;
+ 		pkw0->vSimulieren();
+ 		pkw1->vSimulieren();
+ 		pkw2->vSimulieren();
+ 		cout << *pkw0 << endl;
+ 		cout << *pkw1 << endl;
+ 		cout << *pkw2 << endl;
+ 	}
+
+ 	delete (pkw0);
+ 	delete (pkw1);
+ 	delete (pkw2);
+
+
+ 	Fahrrad *fahrrad10 = new Fahrrad("kez",3, 40);
+ 	Fahrrad *fahrrad11 = new Fahrrad("erakez",4, 13);
+ 	Fahrrad *fahrrad12 = new Fahrrad("tez",5, 120);
+
+ 	fahrrad10->vKopf();
+ 	fahrrad10->vSimulieren();
+ 	fahrrad11->vSimulieren();
+ 	fahrrad12->vSimulieren();
+
+ 	cout << *fahrrad10 << endl;
+ 	cout << *fahrrad11 << endl;
+ 	cout << *fahrrad12 << endl;
+
+
+ 	delete(fahrrad10);
+ 	delete(fahrrad10);
+ 	delete(fahrrad10);
+ 	return 0;
+ };
+
+void Aufgabe_4(){
+	Weg weg("Klusstr", 0, 100.0, Tempolimit::Landstrasse); // Annahme: Konstruktor für Weg mit Name und Länge
+	weg.vKopf();
+	cout<< weg << endl;
+};
+
+
+
+void Aufgabe_5(){
+	unique_ptr<Fahrzeug> bmw = std::make_unique<PKW>("BMW",1,100,9);
+	unique_ptr<Fahrzeug> audi = std::make_unique<PKW>("Audi",2,50,8);
+	unique_ptr<Fahrzeug> bmx = std::make_unique<Fahrrad>("BMX",3,30);
+
+	Weg weg("Klusstr", 0, 100.0, Tempolimit::Landstrasse); // Annahme: Konstruktor für Weg mit Name und Länge
+//	weg.fahrzeugHinzufuegen(move(bmw));
+//	weg.fahrzeugHinzufuegen(move(audi));
+//	weg.fahrzeugHinzufuegen(move(bmx));
+	dGlobaleZeit = 70;
+	weg.vKopf();
+	// Fahrzeuge auf dem Weg annehmen
+	weg.vAnnahme(move(bmw));// должен вывести 100 в p_dGesamtstrecke и das Ende des Weges
+	weg.vAnnahme(move(audi), 80);// 0, das Auto kann nict mehr halten
+	weg.vAnnahme(move(bmx));//35
+
+	cout<< weg << endl;
+
+
+};
+
+void Aufgabe_6(){
+	unique_ptr<Fahrzeug> bmw = std::make_unique<PKW>("BMW",1,100,9);
+	unique_ptr<Fahrzeug> audi = std::make_unique<PKW>("Audi",2,50,8);
+	unique_ptr<Fahrzeug> bmx = std::make_unique<Fahrrad>("BMX",3,30);
+
+	Weg weg1("Klusstrtuda", 0, 25.0, Tempolimit::Landstrasse);
+	Weg weg11("Klusstrsuda", 0, 25.0, Tempolimit::Landstrasse);
+	Weg weg2("Langestrtuda", 0, 30.0, Tempolimit::Autobahn);
+	Weg weg22("Langestrsuda", 0, 30.0, Tempolimit::Autobahn);
+
+	weg1.vKopf();
+	weg1.vAnnahme(move(bmw));// должен вывести 100 в p_dGesamtstrecke и das Ende des Weges
+	weg1.vAnnahme(move(audi), 3);// 0, das Auto kann nict mehr halten
+	weg2.vAnnahme(move(bmx));//35
+
+//Эта симуляция нееее работает если брать время больше !!!!!
+	for (dGlobaleZeit = 0; dGlobaleZeit < 100; dGlobaleZeit += 1)
+	{
+		cout << string(130, '=') << endl;
+		cout << "Simulieren Zeit: " << dGlobaleZeit << " min" << endl;
+		cout << string(130, '=') << endl;
+		//
+		cout<< weg1 << endl;
+		weg1.vSimulieren();
+
+		cout << string(130, '-') << endl;
+		cout<< weg2 << endl;
+		weg2.vSimulieren();
+		vSetzeZeit((double)dGlobaleZeit);
+
+	}
+};
+
+int main(){
+	int f[4]={ 700, 250, 100, 250 };
+//	const char* str1='Klusstrtuda';
+//	std::string s = str1;
+//	const char* str2='Klusstrsuda';
+//	std::string d = str2;
+	//Aufgabe_4();
+	//Aufgabe_5();
+	bInitialisiereGrafik(800, 500);
+	bZeichneStrasse((const char*) "Klusstrtuda",(const char*) "Klusstrsuda", 25, 2, f);
+	Aufgabe_6();
+
+	return 0;
+};

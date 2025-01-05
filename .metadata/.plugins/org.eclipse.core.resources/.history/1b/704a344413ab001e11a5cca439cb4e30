@@ -1,0 +1,60 @@
+/*
+ * Verhalten.cpp
+ *
+ *  Created on: 27 дек. 2023 г.
+ *      Author: alexp
+ */
+
+#include "Verhalten.h"
+#include "Fahrzeug.h"
+#include "PKW.h"
+#include "Fahrrad.h"
+
+Verhalten::~Verhalten(){
+
+}
+
+Verhalten::Verhalten(Weg& weg) : referenzWeg(weg) {
+
+    // Initialisierung des Fahrverhalten-Objekts mit dem übergebenen Weg
+}
+
+double Verhalten::dStrecke(Fahrzeug& fahrzeug, unsigned int dZeitIntervall) const {
+	double aktuelleGeschwindigkeit;  // скорость
+	double aktuelleStrecke;//весь пройденный путь
+	double aktuelleTeilStrecke;//пройденный путь на данной дороге
+    // Implementierung der dStrecke-Funktion
+    // Hier wird berechnet, wie weit ein Fahrzeug innerhalb des übergebenen Zeitintervalls fahren kann
+    // Beachten Sie, dass der Aufruf auf private Variablen von Weg und Fahrzeug über Getter-Funktionen erfolgen sollte
+	double dMoeglicheStrecke= referenzWeg.getLaenge();//длина дороги
+    // Beispiel:
+	if (fahrzeug.t_fahrzeug == pkw_type){
+		aktuelleGeschwindigkeit = ((PKW&)fahrzeug).dGeschwindigkeit();  // скорость
+		aktuelleStrecke = ((PKW&)fahrzeug).get_GesamtStrecke();//весь пройденный путь
+		aktuelleTeilStrecke = ((PKW&)fahrzeug).get_TeilStrecke();//пройденный путь на данной дороге
+	}
+	else {
+		aktuelleGeschwindigkeit = ((Fahrrad&)fahrzeug).dGeschwindigkeit();  // скорость
+		aktuelleStrecke = ((Fahrrad&)fahrzeug).get_GesamtStrecke();//весь пройденный путь
+		aktuelleTeilStrecke = ((Fahrrad&)fahrzeug).get_TeilStrecke();//пройденный путь на данной дороге
+	}
+	double deltaTeilStrecke = aktuelleGeschwindigkeit/60*dZeitIntervall;
+    if (dMoeglicheStrecke > aktuelleTeilStrecke + deltaTeilStrecke){
+    	reCoGnizer=false;
+    	return deltaTeilStrecke;
+    }
+    else if (dMoeglicheStrecke == aktuelleTeilStrecke + deltaTeilStrecke) {
+    	//TODO: выдать сигнал  конца дороги
+    	cout<< "Es ist das Ende des Weges" << endl;
+    	reCoGnizer=true;
+    	return deltaTeilStrecke;
+    }
+    else{
+    	//TODO: выдать сигнал  конца дороги
+    	cout<< "Es ist das Ende des Weges" << endl;
+    	reCoGnizer=true;
+    	return dMoeglicheStrecke-aktuelleTeilStrecke;
+    }
+}
+
+

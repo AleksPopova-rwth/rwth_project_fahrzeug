@@ -1,0 +1,10 @@
+17:26:46 **** Clean-only build of configuration Default for project Fahrzeug ****
+make clean 
+find: ‘include’: Нет такого файла или каталога
+rm -f .//main
+rm -f .//Fahrausnahme.o .//Fahren.o .//Fahrrad.o .//Fahrzeug.o .//Kreuzung.o .//Losfahren.o .//main.o .//Parken.o .//PKW.o .//SimuClient.o .//SimuClientSocket.o .//Simulationsobjekt.o .//Streckenende.o .//Verhalten.o .//Weg.o ./.metadata/.plugins/org.eclipse.cdt.make.core/specs.o
+rm -f .//Fahrausnahme.d .//Fahren.d .//Fahrrad.d .//Fahrzeug.d .//Kreuzung.d .//Losfahren.d .//main.d .//Parken.d .//PKW.d .//SimuClient.d .//SimuClientSocket.d .//Simulationsobjekt.d .//Streckenende.d .//Verhalten.d .//Weg.d ./.metadata/.plugins/org.eclipse.cdt.make.core/specs.d
+Cleanup complete!
+
+17:26:47 Build Finished. 0 errors, 0 warnings. (took 701ms)
+
