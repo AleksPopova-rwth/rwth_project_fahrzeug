@@ -60,15 +60,3 @@ Das Projekt ist Teil eines größeren Vorhabens an der RWTH Aachen und richtet s
   ```bash
   git clone https://github.com/AleksPopova-rwth/rwth_project_fahrzeug.git
   ```
-
-- Baue das Projekt:
-  ```bash
-  make
-  ```
-
-- Führe das Projekt aus:
-  ```bash
-  ./fahrzeug_simulation
-  ```
-
-Das Dokument bietet eine kurze Einführung in das Projekt, die grundlegenden Funktionen und Anweisungen zur Verwendung. Es ist einfach gehalten, um die wesentlichen Informationen zu vermitteln.
